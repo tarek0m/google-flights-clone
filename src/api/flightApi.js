@@ -1,12 +1,20 @@
-const API_URL =
+const FLIGHTS_API_URL =
   'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlights';
 
-export const fetchFlights = async (from, to, date) => {
+export const fetchFlights = async (searchParams) => {
+  const { origin, destination, departureDate, returnDate, cabinClass } =
+    searchParams;
+
   try {
     const response = await fetch(
-      `${API_URL}?originSkyId=${from}&destinationSkyId=${to}&date=${date}`,
+      `${FLIGHTS_API_URL}?originSkyId=${origin.id}&destinationSkyId=${
+        destination.id
+      }&date=${departureDate.format(
+        'YYYY-MM-DD'
+      )}&returnDate=${returnDate.format(
+        'YYYY-MM-DD'
+      )}&cabinClass=${cabinClass}`,
       {
-        method: 'GET',
         headers: {
           'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_KEY,
           'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com',
@@ -14,14 +22,10 @@ export const fetchFlights = async (from, to, date) => {
       }
     );
 
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
-
     const data = await response.json();
-    return data;
+    return data.flights || [];
   } catch (error) {
     console.error('Failed to fetch flights:', error);
-    return null;
+    return [];
   }
 };

@@ -1,12 +1,18 @@
 import React from 'react';
-import FlightSearch from './components/FlightSearch';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import { useTheme } from './context/ThemeContext';
+import { createAppTheme } from './theme/theme';
+import FlightSearch from './components/flight/FlightSearch';
 
-function App() {
+export default function App() {
+  const { isDarkMode } = useTheme();
+  const theme = createAppTheme(isDarkMode ? 'dark' : 'light');
+
   return (
-    <div className='App'>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
       <FlightSearch />
-    </div>
+    </MuiThemeProvider>
   );
 }
-
-export default App;
