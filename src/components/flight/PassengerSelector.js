@@ -23,8 +23,6 @@ export const PassengerSelector = () => {
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log('Passengers:', passengers);
-    console.log('event.currentTarget:', event.currentTarget);
   };
 
   const handleClose = () => {
@@ -58,7 +56,7 @@ export const PassengerSelector = () => {
   return (
     <FormControl>
       <Button
-        variant='outlined'
+        variant='standard'
         onClick={handleClick}
         startIcon={<Person />}
         endIcon={<ArrowDropDown />}
@@ -171,12 +169,21 @@ export const PassengerSelector = () => {
           </Box>
         </MenuItem>
 
-        <MenuItem disableRipple>
+        <MenuItem
+          disableRipple
+          sx={{
+            '&:hover': {
+              backgroundColor: 'transparent', // Remove background color on hover
+              boxShadow: 'none',
+              cursor: 'default',
+            },
+          }}
+        >
           <Box display='flex' justifyContent='space-between' width='100%'>
-            <Button color='primary' onClick={handleCancel}>
+            <Button variant='text' color='primary' onClick={handleCancel}>
               Cancel
             </Button>
-            <Button color='primary' onClick={handleDone}>
+            <Button variant='text' color='primary' onClick={handleDone}>
               Done
             </Button>
           </Box>

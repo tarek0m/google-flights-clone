@@ -10,6 +10,7 @@ export const fetchAirportSuggestions = async (query) => {
       },
     });
     const data = await response.json();
+    console.log(data);
     return data.data || [];
   } catch (error) {
     console.error('Failed to fetch airport suggestions:', error);

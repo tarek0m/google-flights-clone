@@ -9,7 +9,7 @@ export const DateSelector = ({
   departureDate,
   returnDate,
   onChange,
-  flightType = 'roundtrip', // can be 'oneway' or 'roundtrip'
+  flightType, // can be 'oneway' or 'roundtrip'
 }) => {
   const handleDepartureDateChange = (newValue) => {
     onChange('departureDate', newValue);
@@ -39,7 +39,6 @@ export const DateSelector = ({
               },
             }}
           />
-          <FormHelperText>Select departure date</FormHelperText>
         </FormControl>
 
         {flightType === 'roundtrip' && (
@@ -57,7 +56,6 @@ export const DateSelector = ({
                 },
               }}
             />
-            <FormHelperText>Select return date</FormHelperText>
           </FormControl>
         )}
       </Box>

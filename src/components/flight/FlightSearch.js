@@ -1,6 +1,6 @@
 import React from 'react';
-import { Box, Container } from '@mui/material';
-import { ThemeToggle } from '../common/ThemeToggle';
+import { Box } from '@mui/material';
+import { Navbar } from './Navbar';
 import { FlightSearchForm } from './FlightSearchForm';
 import { FlightResults } from './FlightResults';
 import { useFlightSearch } from '../../hooks/useFlightSearch';
@@ -10,13 +10,9 @@ const FlightSearch = () => {
 
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-      <Container>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
-          <ThemeToggle />
-        </Box>
-        <FlightSearchForm />
-        <FlightResults flights={flights} loading={loading} />
-      </Container>
+      <Navbar />
+      <FlightSearchForm />
+      <FlightResults flights={flights} loading={loading} />
     </Box>
   );
 };

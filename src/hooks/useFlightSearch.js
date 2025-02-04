@@ -8,6 +8,7 @@ export const useFlightSearch = () => {
     destination: '',
     departureDate: dayjs(),
     returnDate: dayjs().add(7, 'day'),
+    flightType: 'roundtrip',
     passengers: 1,
     cabinClass: 'economy',
   });
@@ -16,14 +17,17 @@ export const useFlightSearch = () => {
   const [flights, setFlights] = useState([]);
 
   const updateSearchParams = (key, value) => {
+    console.log('Key:', key, 'Value:', value);
     setSearchParams((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleSearch = async () => {
     setLoading(true);
     try {
+      console.log('Search Params:', searchParams);
       const results = await fetchFlights(searchParams);
       setFlights(results);
+      console.log('Flights:', results);
     } finally {
       setLoading(false);
     }
