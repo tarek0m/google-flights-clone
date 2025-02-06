@@ -9,17 +9,14 @@ import {
   FormControl,
 } from '@mui/material';
 import { Person, Add, Remove, ArrowDropDown } from '@mui/icons-material';
+import { useFlightSearch } from '../../contexts/FlightSearchContext';
 
 export const PassengerSelector = () => {
+  const { searchParams, updateSearchParams } = useFlightSearch();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [passengers, setPassengers] = useState({
-    adults: 1,
-    children: 0,
-    infantsInSeat: 0,
-    infantsOnLap: 0,
+  const [tempPassengers, setTempPassengers] = useState({
+    ...searchParams.passengers,
   });
-
-  const [tempPassengers, setTempPassengers] = useState({ ...passengers });
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,24 +35,25 @@ export const PassengerSelector = () => {
   };
 
   const handleCancel = () => {
-    setTempPassengers({ ...passengers });
+    setTempPassengers({ ...searchParams.passengers });
     handleClose();
   };
 
   const handleDone = () => {
-    setPassengers({ ...tempPassengers });
+    updateSearchParams('passengers', { ...tempPassengers });
     handleClose();
   };
 
   const totalPassengers =
-    passengers.adults +
-    passengers.children +
-    passengers.infantsInSeat +
-    passengers.infantsOnLap;
+    searchParams.passengers.adults +
+    searchParams.passengers.children +
+    searchParams.passengers.infantsInSeat +
+    searchParams.passengers.infantsOnLap;
 
   return (
     <FormControl>
       <Button
+        sx={{ p: 0, m: 0 }}
         variant='standard'
         onClick={handleClick}
         startIcon={<Person />}
@@ -74,7 +72,7 @@ export const PassengerSelector = () => {
             <Typography>Adults</Typography>
             <Box display='flex' alignItems='center'>
               <IconButton
-                disabled
+                disabled={tempPassengers.adults <= 1}
                 size='small'
                 onClick={() => handleChange('adults', 'dec')}
               >
@@ -173,7 +171,7 @@ export const PassengerSelector = () => {
           disableRipple
           sx={{
             '&:hover': {
-              backgroundColor: 'transparent', // Remove background color on hover
+              backgroundColor: 'transparent',
               boxShadow: 'none',
               cursor: 'default',
             },

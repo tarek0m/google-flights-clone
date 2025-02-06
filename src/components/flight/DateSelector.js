@@ -25,7 +25,13 @@ export const DateSelector = ({
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ display: 'flex', gap: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexFlow: { xs: 'column', md: 'row' },
+          gap: 2,
+        }}
+      >
         <FormControl fullWidth>
           <DatePicker
             label='Departure Date'

@@ -1,18 +1,45 @@
 const FLIGHTS_API_URL =
   'https://sky-scrapper.p.rapidapi.com/api/v2/flights/searchFlights';
 
-export const fetchFlights = async (searchParams) => {
-  const { origin, destination, departureDate, returnDate, cabinClass } =
-    searchParams;
-  const url = `${FLIGHTS_API_URL}?originSkyId=${
-    origin.skyId
-  }&destinationSkyId=${destination.skyId}&originEntityId=${origin.entityId}
-      &destinationEntityId=${destination.entityId}
-      &date=${departureDate.format(
-        'YYYY-MM-DD'
-      )}&returnDate=${returnDate.format(
-    'YYYY-MM-DD'
-  )}&cabinClass=${cabinClass}`;
+export const fetchFlights = async (searchParams, configs) => {
+  const {
+    origin,
+    destination,
+    departureDate,
+    returnDate,
+    flightType,
+    passengers,
+    cabinClass,
+  } = searchParams;
+
+  const { currency, market, countryCode } = configs;
+
+  const baseUrl = new URL(FLIGHTS_API_URL);
+  const params = new URLSearchParams({
+    originSkyId: origin.skyId,
+    destinationSkyId: destination.skyId,
+    originEntityId: origin.entityId,
+    destinationEntityId: destination.entityId,
+    cabinClass,
+    date: departureDate.format('YYYY-MM-DD'),
+    adults: passengers.adults.toString(),
+    currency,
+    market,
+    countryCode,
+  });
+
+  if (flightType === 'roundtrip' && returnDate) {
+    params.append('returnDate', returnDate.format('YYYY-MM-DD'));
+  }
+  if (passengers.children > 0) {
+    params.append('childrens', passengers.children.toString());
+  }
+  const totalInfants = passengers.infantsInSeat + passengers.infantsOnLap;
+  if (totalInfants > 0) {
+    params.append('infants', totalInfants.toString());
+  }
+
+  baseUrl.search = params.toString();
 
   const options = {
     method: 'GET',
@@ -21,14 +48,14 @@ export const fetchFlights = async (searchParams) => {
       'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com',
     },
   };
-  try {
-    const response = await fetch(url, options);
 
+  try {
+    const response = await fetch(baseUrl.toString(), options);
+    if (!response.ok) throw new Error('Failed to fetch flights');
     const data = await response.json();
-    console.log('Data:', data);
-    return data.flights || [];
+    return data.data.itineraries || [];
   } catch (error) {
     console.error('Failed to fetch flights:', error);
-    return [];
+    throw error;
   }
 };

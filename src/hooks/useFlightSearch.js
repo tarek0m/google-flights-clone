@@ -1,43 +1,51 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { fetchFlights } from '../api/flightApi';
 import dayjs from 'dayjs';
 
 export const useFlightSearch = () => {
   const [searchParams, setSearchParams] = useState({
-    origin: '',
-    destination: '',
+    origin: null,
+    destination: null,
     departureDate: dayjs(),
     returnDate: dayjs().add(7, 'day'),
     flightType: 'roundtrip',
-    passengers: 1,
+    passengers: {
+      adults: 1,
+      children: 0,
+      infantsInSeat: 0,
+      infantsOnLap: 0,
+    },
     cabinClass: 'economy',
   });
 
   const [loading, setLoading] = useState(false);
-  const [flights, setFlights] = useState([]);
+  const [itineraries, setItineraries] = useState([]);
 
-  const updateSearchParams = (key, value) => {
-    console.log('Key:', key, 'Value:', value);
+  const updateSearchParams = useCallback((key, value) => {
     setSearchParams((prev) => ({ ...prev, [key]: value }));
-  };
+  }, []);
 
-  const handleSearch = async () => {
+  const handleSearch = useCallback(async () => {
+    if (!searchParams.origin || !searchParams.destination) return;
+
     setLoading(true);
     try {
-      console.log('Search Params:', searchParams);
       const results = await fetchFlights(searchParams);
-      setFlights(results);
-      console.log('Flights:', results);
+      // Update both states together
+      setItineraries(results);
+    } catch (error) {
+      console.error('Failed to search itineraries:', error);
+      setItineraries([]); // Clear results on error
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchParams]);
 
   return {
     searchParams,
     updateSearchParams,
     handleSearch,
     loading,
-    flights,
+    itineraries,
   };
 };

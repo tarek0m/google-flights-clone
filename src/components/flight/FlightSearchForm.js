@@ -1,9 +1,8 @@
-import React from 'react';
 import { Paper, Box } from '@mui/material';
 import { AirportAutocomplete } from './AirportAutocomplete';
 import { PassengerSelector } from './PassengerSelector';
 import { DateSelector } from './DateSelector';
-import { useFlightSearch } from '../../hooks/useFlightSearch';
+import { useFlightSearch } from '../../contexts/FlightSearchContext';
 import { SearchButton } from './SearchButton';
 import { TripSelector } from './TripSelector';
 import { CabinClassSelector } from './CabinClassSelector';
@@ -12,13 +11,22 @@ export const FlightSearchForm = () => {
   const { searchParams, updateSearchParams, handleSearch } = useFlightSearch();
 
   return (
-    <Box sx={{ px: { xs: 10, md: 20 }, py: 5 }}>
-      <Paper>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        px: { xs: 5, md: 0 },
+        py: 5,
+      }}
+    >
+      <Paper sx={{ width: '100%', maxWidth: 1000 }}>
         <Box
           sx={{
             alignSelf: 'flex-start',
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
+            flexFlow: { xs: 'column', md: 'row' },
             gap: 1,
             px: 3,
           }}
@@ -43,7 +51,14 @@ export const FlightSearchForm = () => {
             flexFlow: { xs: 'column', md: 'row' },
           }}
         >
-          <Box sx={{ display: 'flex', gap: 2, width: '100%' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexFlow: { xs: 'column', md: 'row' },
+              gap: 2,
+              width: '100%',
+            }}
+          >
             <AirportAutocomplete
               value={searchParams.origin}
               onChange={(value) => updateSearchParams('origin', value)}
