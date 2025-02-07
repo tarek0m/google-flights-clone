@@ -11,10 +11,8 @@ export const fetchFlights = async (searchParams, configs) => {
     passengers,
     cabinClass,
   } = searchParams;
-
   const { currency, market, countryCode } = configs;
 
-  const baseUrl = new URL(FLIGHTS_API_URL);
   const params = new URLSearchParams({
     originSkyId: origin.skyId,
     destinationSkyId: destination.skyId,
@@ -28,29 +26,23 @@ export const fetchFlights = async (searchParams, configs) => {
     countryCode,
   });
 
-  if (flightType === 'roundtrip' && returnDate) {
+  if (flightType === 'roundtrip' && returnDate)
     params.append('returnDate', returnDate.format('YYYY-MM-DD'));
-  }
-  if (passengers.children > 0) {
+  if (passengers.children > 0)
     params.append('childrens', passengers.children.toString());
-  }
-  const totalInfants = passengers.infantsInSeat + passengers.infantsOnLap;
-  if (totalInfants > 0) {
-    params.append('infants', totalInfants.toString());
-  }
-
-  baseUrl.search = params.toString();
-
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_KEY,
-      'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com',
-    },
-  };
+  if (passengers.infantsInSeat + passengers.infantsOnLap > 0)
+    params.append(
+      'infants',
+      (passengers.infantsInSeat + passengers.infantsOnLap).toString()
+    );
 
   try {
-    const response = await fetch(baseUrl.toString(), options);
+    const response = await fetch(`${FLIGHTS_API_URL}?${params.toString()}`, {
+      headers: {
+        'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_KEY,
+        'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com',
+      },
+    });
     if (!response.ok) throw new Error('Failed to fetch flights');
     const data = await response.json();
     return data.data.itineraries || [];

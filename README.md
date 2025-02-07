@@ -1,121 +1,154 @@
 # Flight Search App
 
-## ✈️ Overview
+A React-based flight search application that allows users to search for flights, view flight details, and manage search parameters.
+![screenshot](./public/images/screenshots/1.png)
 
-The **Flight Search App** is a React.js web application that allows users to search for flights based on their departure city and destination. It fetches real-time flight data from the **Sky Scrapper API (RapidAPI)** and presents it in a user-friendly interface using **Material UI**.
+## Features
 
-## 🚀 Features
+- **Flight Search**: Search for flights by origin, destination, date, and cabin class.
+- **Airport Autocomplete**: Real-time airport suggestions as you type.
+- **Passenger Selection**: Select the number of adults, children, and infants.
+- **Date Selection**: Choose departure and return dates with a user-friendly date picker.
+- **Cabin Class Selection**: Choose between Economy, Premium Economy, Business, and First Class.
+- **Theme Toggle**: Switch between light and dark themes.
+- **Responsive Design**: Optimized for both mobile and desktop views.
 
-- **Search for Flights** by entering departure and destination cities
-- **View Flight Details** including price, duration, and stopovers
-- **Interactive Map** to visualize flight routes
-- **Material UI Styling** for a modern and responsive design
-- **Loading Indicators** for better UX
-- **Dark Mode Support** (if needed)
+## Technologies Used
 
-## 🏗️ Folder Structure
+- **React**: A JavaScript library for building user interfaces.
+- **Material-UI**: A popular React UI framework.
+- **RapidAPI**: For fetching flight and airport data.
+
+## Usage
+
+1. **Enter Origin & Destination**: Select the origin and destination airports.
+2. **Choose Dates**: Select the departure and return dates.
+3. **Select Passengers**: Choose the number of passengers and cabin class.
+4. **View Flights**: Click "Search" to view flight results.
+
+## Screenshots
+
+### Web Version
+
+![screenshot](./public/images/screenshots/2.png)
+![screenshot](./public/images/screenshots/3.png)
+![screenshot](./public/images/screenshots/4.png)
+
+### Mobile Version
+
+![screenshot](./public/images/screenshots/5.png)
+![screenshot](./public/images/screenshots/6.png)
+
+## Project Structure
 
 ```
-flight-search-app/
-│── public/               # Static files (HTML, icons, etc.)
-│── src/                  # Source code
-│   ├── api/              # API calls
-│   │   ├── fetchFlights.js  # Fetch flight data from API
-│   │   └── config.js        # API configuration
-│   │
-│   ├── components/       # Reusable UI components
-│   │   ├── SearchBar.jsx    # Flight search bar
-│   │   ├── FlightCard.jsx   # Flight details component
-│   │   ├── Map.jsx          # Map visualization
-│   │
-│   ├── pages/            # Main app pages
-│   │   ├── Home.jsx          # Homepage with search UI
-│   │   ├── FlightResults.jsx # Page displaying flight results
-│   │
-│   ├── styles/           # Styling and themes
-│   │   ├── theme.js          # Material UI theme
-│   │   ├── global.css        # Global styles
-│   │
-│   ├── App.js            # Main app component
-│   ├── index.js          # Entry point
-│   ├── routes.js         # App routes configuration
-│
-│── .env                  # API keys (DO NOT commit)
-│── package.json          # Dependencies and scripts
-│── README.md             # Project documentation
+├── api/
+│   ├── airportApi.js
+│   ├── configApi.js
+│   └── flightApi.js
+├── components/
+│   ├── common/
+│   │   ├── LoadingSpinner.js
+│   │   └── ThemeToggle.js
+│   └── flight/
+│       ├── AirportAutocomplete.js
+│       ├── CabinClassSelector.js
+│       ├── DateSelector.js
+│       ├── FlightResults.js
+│       ├── FlightSearch.js
+│       ├── FlightSearchForm.js
+│       ├── Navbar.js
+│       ├── PassengerSelector.js
+│       ├── SearchButton.js
+│       └── TripSelector.js
+├── contexts/
+│   ├── FlightSearchContext.js
+│   └── ThemeContext.js
+├── hooks/
+│   ├── useAirports.js
+│   └── useFlightSearch.js
+├── theme/
+│   ├── constants.js
+│   └── theme.js
+├── utils/
+│   ├── dateUtils.js
+│   └── formatters.js
+├── App.js
+├── index.css
+└── index.js
 ```
 
-## 📦 Installation & Setup
+## Components
 
-1. **Clone the Repository**
+### API
 
-   ```sh
-   git clone https://github.com/yourusername/flight-search-app.git
-   cd flight-search-app
-   ```
+- `airportApi.js` - Handles airport-related API calls
+- `configApi.js` - Handle Air Scrapper configuration API calls
+- `flightApi.js` - Handles flight search and related API calls
 
-2. **Install Dependencies**
+### Common Components
 
-   ```sh
-   npm install
-   ```
+- `LoadingSpinner.js` - Loading state indicator
+- `ThemeToggle.js` - Theme switching functionality
 
-3. **Set Up API Key**
+### Flight Components
 
-   - Create a `.env` file in the root directory and add:
-     ```env
-     REACT_APP_RAPIDAPI_KEY=your_api_key_here
-     ```
-   - Replace `your_api_key_here` with your actual **Sky Scrapper API** key from RapidAPI.
+- `AirportAutocomplete.js` - Airport search and selection
+- `CabinClassSelector.js` - Cabin class selection
+- `DateSelector.js` - Flight date selection
+- `FlightResults.js` - Display flight search results
+- `FlightSearch.js` - Main flight search component
+- `FlightSearchForm.js` - Flight search form
+- `Navbar.js` - Navigation component
+- `PassengerSelector.js` - Passenger count and type selection
+- `SearchButton.js` - Search action button
+- `TripSelector.js` - Trip type selection (one-way/round-trip/multi-city)
 
-4. **Run the App**
-   ```sh
-   npm start
-   ```
-   The app will be available at `http://localhost:3000/`.
+### Contexts
 
-## 🔧 Technologies Used
+- `FlightSearchContext.js` - Flight search state management
+- `ThemeContext.js` - Theme state management
 
-- **React.js** (v18)
-- **Material UI** (for styling)
-- **React Router** (for navigation)
-- **Fetch API** (to get flight data from RapidAPI)
-- **Context API** (for global state management)
+### Hooks
 
-## 🛠️ API Integration (Sky Scrapper API)
+- `useAirports.js` - Custom hook for airport data
+- `useFlightSearch.js` - Custom hook for flight search functionality
 
-- API Docs: [Sky Scrapper API](https://rapidapi.com/apiheya/api/sky-scrapper)
-- Example API Call (Using `fetchFlights.js`):
-  ```js
-  const fetchFlights = async (origin, destination) => {
-    const response = await fetch(
-      'https://sky-scrapper.p.rapidapi.com/flights',
-      {
-        method: 'GET',
-        headers: {
-          'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_KEY,
-          'X-RapidAPI-Host': 'sky-scrapper.p.rapidapi.com',
-        },
-      }
-    );
-    return response.json();
-  };
-  ```
+### Theme
 
-## 🛠️ Future Improvements
+- `constants.js` - Theme-related constants
+- `theme.js` - Theme configuration
 
-- Add **user authentication** (Sign in / Sign up)
-- Implement **filter & sorting options** for flight results
-- Optimize performance with **React Query** or **SWC**
-- Deploy the app using **Vercel** or **Netlify**
+### Utils
+
+- `dateUtils.js` - Date manipulation utilities
+- `formatters.js` - Data formatting utilities
+
+## Getting Started
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Start the development server:
+
+```bash
+npm start
+```
+
+## Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+REACT_APP_API_URL=your_api_url
+```
 
 ## 👨‍💻 Author
 
 Developed by **Tarek Alnaggar** 🚀
-
-## 📜 License
-
-This project is licensed under the **MIT License**.
 
 ---
 

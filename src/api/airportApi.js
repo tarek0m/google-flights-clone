@@ -13,9 +13,7 @@ export const fetchAirportSuggestions = async (query, abortSignal) => {
     const data = await response.json();
     return data.data || [];
   } catch (error) {
-    if (error.name === 'AbortError') {
-      return [];
-    }
+    if (error.name === 'AbortError') return [];
     console.error('Failed to fetch airport suggestions:', error);
     return [];
   }
