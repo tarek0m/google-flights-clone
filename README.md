@@ -143,7 +143,7 @@ npm start
 Create a `.env` file in the root directory with the following variables:
 
 ```
-REACT_APP_API_URL=your_api_url
+REACT_APP_RAPIDAPI_KEY=your_api_url
 ```
 
 ## 👨‍💻 Author
